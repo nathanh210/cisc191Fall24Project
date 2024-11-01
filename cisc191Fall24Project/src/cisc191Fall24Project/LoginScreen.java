@@ -34,6 +34,6 @@ public class LoginScreen extends JPanel {
         System.out.println("Username entered: " + username);
         
         // Move to next screen 
-        mainFrame.showScreen("");
+        mainFrame.showScreen("GenreYearSelectionScreen");
     }
 }    

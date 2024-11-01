@@ -19,9 +19,17 @@ public class MainFrame extends JFrame {
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
         
-        // Initialize panels
         LoginScreen loginScreen = new LoginScreen(this);
+        GenreYearSelectionScreen genreYearSelectionScreen = new GenreYearSelectionScreen(this);
+
         cardPanel.add(loginScreen, "LoginScreen");
+        cardPanel.add(genreYearSelectionScreen, "GenreYearSelectionScreen");
+
+        add(cardPanel);
+        
+        // Initialize panels
+        LoginScreen loginScreen1 = new LoginScreen(this);
+        cardPanel.add(loginScreen1, "LoginScreen");
         
         // Add more panels here as needed
 
