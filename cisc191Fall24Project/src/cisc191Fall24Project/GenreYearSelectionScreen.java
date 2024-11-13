@@ -30,10 +30,10 @@ public class GenreYearSelectionScreen extends JPanel {
      * Initializes combo boxes for selecting genre and year, and a submit button with event handling.
      */
     private void initComponents() {
-        // Data arrays for combo boxes
-        String[] genres = {"Progressive Rock", "Hard Bop", "Death Metal", "Hard Rock", "Thrash Metal"};
-        Integer[] years = {1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999};
-
+    	// Include a default "Please select" option to allow intentional non-selection
+        String[] genres = {"Please select", "Progressive Rock", "Hard Bop", "Death Metal", "Hard Rock", "Thrash Metal"};
+        Integer[] years = {null, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999}; // null represents "Please select"
+        
         // Initialize combo boxes with data
         genreComboBox = new JComboBox<>(genres);
         yearComboBox = new JComboBox<>(years);
@@ -51,16 +51,24 @@ public class GenreYearSelectionScreen extends JPanel {
     }
 
     /**
-     * Handles the action event when the submit button is clicked. It retrieves the selected genre and year,
-     * prints them, and can transition to another screen.
-     * @param e The event object representing the action event.
+     * The method checks if either selectedGenre or selectedYear is null (i.e., not selected). 
+     * If so, it throws an IllegalArgumentException with a message indicating that both fields are required.
+     * A try-catch block captures and handles this exception, displaying an error message in a dialog box to the user.    
+     *  * @param e The event object representing the action event.
      */
     private void submitAction(ActionEvent e) {
-        // Retrieve selections from combo boxes
-        String selectedGenre = (String) genreComboBox.getSelectedItem();
-        Integer selectedYear = (Integer) yearComboBox.getSelectedItem();
-        // Output the selected items
-        System.out.println("Genre: " + selectedGenre + ", Year: " + selectedYear);
-        //Transition to next screen could be put here
+        try {
+            String selectedGenre = (String) genreComboBox.getSelectedItem();
+            Integer selectedYear = (Integer) yearComboBox.getSelectedItem();
+            if (selectedGenre == null || selectedYear == null) {
+                throw new IllegalArgumentException("Both genre and year must be selected.");
+            }
+            System.out.println("Genre: " + selectedGenre + ", Year: " + selectedYear);
+            // Proceed to next screen if both selections are valid
+            // mainFrame.showScreen("NextScreenName"); // Uncomment or modify as needed
+        } catch (IllegalArgumentException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Selection Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
+
 }
