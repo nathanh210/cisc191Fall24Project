@@ -31,8 +31,7 @@ public class MainFrame extends JFrame {
         LoginScreen loginScreen1 = new LoginScreen(this);
         cardPanel.add(loginScreen1, "LoginScreen");
         
-        // Add more panels here as needed
-
+        // Add more panels 
         add(cardPanel);
     }
 
