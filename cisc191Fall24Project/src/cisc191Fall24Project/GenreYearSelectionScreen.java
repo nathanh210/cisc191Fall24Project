@@ -30,8 +30,8 @@ public class GenreYearSelectionScreen extends JPanel {
      * Initializes combo boxes for selecting genre and year, and a submit button with event handling.
      */
     private void initComponents() {
-    	// Include a default "Please select" option to allow intentional non-selection
-        String[] genres = {"Please select", "Progressive Rock", "Hard Bop", "Death Metal", "Hard Rock", "Thrash Metal"};
+    	// Use null option to allow intentional non-selection
+        String[] genres = {null, "Progressive Rock", "Hard Bop", "Death Metal", "Hard Rock", "Thrash Metal"};
         Integer[] years = {null, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999}; // null represents "Please select"
         
         // Initialize combo boxes with data
@@ -62,6 +62,7 @@ public class GenreYearSelectionScreen extends JPanel {
             Integer selectedYear = (Integer) yearComboBox.getSelectedItem();
             if (selectedGenre == null || selectedYear == null) {
                 throw new IllegalArgumentException("Both genre and year must be selected.");
+                
             }
             System.out.println("Genre: " + selectedGenre + ", Year: " + selectedYear);
             // Proceed to next screen if both selections are valid
