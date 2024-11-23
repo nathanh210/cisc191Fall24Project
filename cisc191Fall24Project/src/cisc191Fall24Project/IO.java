@@ -13,20 +13,19 @@ import java.util.Scanner;
 
 /**
 * 
- * Lead Author(s):
+ * 
  * 
  */
 /**
  */
 public class IO {
-	
+
 	// Create a HashMap object
 	public static HashMap<String, ArrayList<String>> data = new HashMap<>();
-	
-	
+
 	public IO() {
-		readTestResults("top.csv"); 
-		
+		readTestResults("top.csv");
+
 	}
 
 	public static HashMap<String, ArrayList<String>> readTestResults(String filename) {
@@ -35,25 +34,13 @@ public class IO {
 		Scanner scanner = null;
 		String result = "";
 
-
 		data.put("rank", new ArrayList<>());
 		data.put("name", new ArrayList<>());
 		data.put("date", new ArrayList<>());
-		data.put("genre", new ArrayList<>()); 
+		data.put("genre", new ArrayList<>());
 
 		try {
 			scanner = new Scanner(file);
-
-//				if(scanner.hasNextLine()){
-//					
-//					String line = scanner.nextLine(); 
-//					
-//					
-//					
-//				} else {
-//					
-//					scanner.close();
-//				}
 
 			// read from the file line-by-line
 			while (scanner.hasNextLine()) { // read until there are no more lines
@@ -62,10 +49,6 @@ public class IO {
 				// the scanner
 				String line = scanner.nextLine();
 
-//				String[] columns = line.split(",");
-
-//				String album = columns[1];
-
 				data.get("rank").add(getRank(line));
 
 				data.get("name").add(getName(line));
@@ -73,8 +56,6 @@ public class IO {
 				data.get("date").add(getDate(line));
 
 				data.get("genre").add(getGenre(line));
-
-//						System.out.println(line);
 
 			}
 
@@ -87,8 +68,9 @@ public class IO {
 			}
 		}
 
-//		System.out.println(data);
-
+		// Remove duplicates from the date list based on years
+		removeDuplicateYears(data.get("date"));
+		removeDuplicateGenres(data.get("genre"));
 		return data;
 	}
 
@@ -110,15 +92,11 @@ public class IO {
 			}
 		}
 
-//		System.out.println(sb);
-
 		return sb.toString();
 
 	}
-	
 
-
-	// method to isolate name
+	// method to isolate name, similar issue: does not isolate all names and includes one or two dates
 	public static String getName(String line) {
 
 		StringBuilder sb = new StringBuilder();
@@ -133,11 +111,11 @@ public class IO {
 			if (line.charAt(i) != ',' && count != 0) {
 
 				continue;
-				
+
 			} else if (line.charAt(i) == ',' && line.charAt(i + 1) == ' ') {
 
 				continue;
-				
+
 			} else if (line.charAt(i) == '"') {
 
 				continue;
@@ -160,8 +138,6 @@ public class IO {
 
 			}
 		}
-
-//		System.out.println(sb);
 
 		return sb.toString();
 
@@ -182,7 +158,7 @@ public class IO {
 			if ((line.charAt(i) != ',' && count != 0) || line.charAt(i) == '"') {
 
 				continue;
-			
+
 			} else if (line.charAt(i) == '"') {
 
 				continue;
@@ -205,141 +181,152 @@ public class IO {
 			}
 		}
 
-//		System.out.println(sb);
-
 		return sb.toString();
 
 	}
 
-	// method to isolate date
+//	// method to isolate date
+//	public static String getDate(String line) {
+//
+//		StringBuilder sb = new StringBuilder();
+//
+//		// look for third comma in the string
+//		int count = 3;
+//
+//		int i = 0;
+//
+//		for (i = 0; i < line.length(); i++) {
+//
+//			if (line.charAt(i) != ',' && count != 0) {
+//
+//				continue;
+//
+//			} else if (line.charAt(i) == ',' && line.charAt(i + 1) == ' ') {
+//
+//				continue;
+//
+//			} else if (line.charAt(i) == '"') {
+//
+//				continue;
+//
+//			} else if (line.charAt(i) == ',' && count != 0) {
+//
+//				count--;
+//
+//			} else if (line.charAt(i) != ',' && count == 0) {
+//
+//				sb.append(line.charAt(i));
+//
+//			} else if (line.charAt(i) == ',' && count == 0) {
+//
+//				break;
+//
+//			} else {
+//
+//				System.out.println("?");
+//			}
+//		}
+//
+//		// Reverse the string to make the year come first
+//		sb.reverse();
+//
+//		// Extract the first four characters (now at the beginning due to reversal)
+//		StringBuilder year = new StringBuilder(sb.substring(0, 4));
+//
+//		// Reverse the year to get it back in the correct order
+//		year.reverse();
+//
+//		return year.toString();
+//	}
+	
 	public static String getDate(String line) {
+	    StringBuilder sb = new StringBuilder();
+	    // look for third comma in the string
+	    int count = 3;
 
+	    int i = 0;
+	    boolean inQuotes = false; // Keep track of whether we're inside quotes
+
+	    for (i = 0; i < line.length(); i++) {
+	        char c = line.charAt(i);
+
+	        // Toggle inQuotes status on encountering a quote
+	        if (c == '"') {
+	            inQuotes = !inQuotes;
+	            continue; // Skip the quote character
+	        }
+
+	        // Skip all characters inside quotes
+	        if (inQuotes) {
+	            continue;
+	        }
+
+	        // Processing only outside of quotes
+	        if (c == ',' && count > 0) {
+	            count--;
+	            continue;
+	        }
+
+	        if (count == 0 && c != ',') {
+	            sb.append(c);
+	        } else if (count == 0 && c == ',') {
+	            break; // Stop reading the date at the next comma after count has reached 0
+	        }
+	    }
+
+	    // Date format is almost always consistent as "dd MMMM yyyy"
+	    String[] parts = sb.toString().trim().split(" ");
+	    
+	    return parts[parts.length - 1]; // Return only the year part
+	}
+	
+
+	public static String getYear(String date) {
+		
 		StringBuilder sb = new StringBuilder();
-
-		// look for third comma in the string
-		int count = 3;
-
-		int i = 0;
-
-		for (i = 0; i < line.length(); i++) {
-
-			if (line.charAt(i) != ',' && count != 0) {
-
-				continue;
+		
+		// the year is always the last 4 characters of the date string
+		if (date.length() >= 4) {
 			
-			} else if (line.charAt(i) == ',' && line.charAt(i + 1) == ' ') {
-
-				continue;
-				
-			} else if (line.charAt(i) == '"') {
-
-				continue;
-
-
-			} else if (line.charAt(i) == ',' && count != 0) {
-
-				count--;
-
-			} else if (line.charAt(i) != ',' && count == 0) {
-
-				sb.append(line.charAt(i));
-
-			} else if (line.charAt(i) == ',' && count == 0) {
-
-				break;
-
-			} else {
-
-				System.out.println("?");
-			}
+			sb.append(date.substring(date.length() - 4)); // Gets the last 4 characters
 		}
-
-//		System.out.println(sb);
-
 		return sb.toString();
-
 	}
 
-	/*
-	 * write to file
-	 */
-	public static void startTestResults(String filename, String data) {
-
-		PrintWriter writer = null;
-
-		try {
-			// Create a PrintWriter object to help facilitate writing to a file
-			writer = new PrintWriter(filename);
-			writer.println(data);
-
-		} catch (FileNotFoundException e) {
-
-			System.out.println(e);
-
-		} finally {
-
-			if (writer != null) {
-				// save and close the file
-				writer.close();
-			}
-
-		}
-
+	public static void removeDuplicateYears(ArrayList<String> years) {
+		
+	    for (int i = 0; i < years.size(); i++) {
+	    	
+	        String year1 = years.get(i);
+	        
+	        for (int j = years.size() - 1; j > i; j--) {
+	        	
+	            String year2 = years.get(j);
+	            
+	            if (year1.equals(year2)) {
+	            	
+	                years.remove(j); // Remove the duplicate year
+	            }
+	        }
+	    }
 	}
-
-	/*
-	 * write data to the file!
-	 */
-	public static void appendTestResult(String filename, String data) {
-		PrintWriter writer = null;
-
-		try {
-			// setup the writer so that it APPENDS with the boolean argument!
-			writer = new PrintWriter(new FileWriter(new File(filename), true));
-			writer.println(data);
-
-		} catch (IOException e) {
-			System.out.println(e);
-		} finally {
-			// clean-up tasks
-			if (writer != null) {
-				// save and close the file! - else it will not
-				writer.close();
-			}
-		}
-
-	}
-
-	public static String readDateTime(String link) {
-
-		Scanner scanner = null;
-		String content = "";
-		try {
-			URL url = new URL(link);
-			scanner = new Scanner(url.openStream());
-
-			while (scanner.hasNext()) {
-				content += scanner.next();
-
-			}
-
-			// get the content to the proper format expected by the tester
-			content = content.substring(content.indexOf("202"));
-
-			// remove everything after ":00"
-			content = content.substring(0, content.indexOf(":00") + 3);
-
-		} catch (Exception e) {
-
-		} finally {
-			// clean up
-			if (scanner != null) {
-				scanner.close();
-			}
-		}
-
-		System.out.println(content);
-		return content;
+	
+	public static void removeDuplicateGenres(ArrayList<String> genres) {
+		
+	    for (int i = 0; i < genres.size(); i++) {
+	    	
+	        String genre1 = genres.get(i);
+	        
+	        for (int j = genres.size() - 1; j > i; j--) {
+	        	
+	            String genre2 = genres.get(j);
+	            
+	            if (genre1 != null && genre1.equals(genre2)) {
+	            	
+	                genres.remove(j); // Remove the duplicate genre
+	            }
+	        }
+	    }
 	}
 
 }
