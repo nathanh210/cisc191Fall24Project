@@ -2,6 +2,8 @@ package cisc191Fall24Project;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * The GenreYearSelectionScreen class extends JPanel and allows users
@@ -10,9 +12,14 @@ import java.awt.event.ActionEvent;
 public class GenreYearSelectionScreen extends JPanel {
     private MainFrame mainFrame;
     private JComboBox<String> genreComboBox;
-    private JComboBox<Integer> yearComboBox;
+    private JComboBox<String> yearComboBox;
     private JButton submitButton;
-
+    private static IO obj = new IO();
+    private HashMap<String, ArrayList<String>> data2 = IO.data;
+    
+    
+    
+    
     /**
      * Constructor sets up the panel with a reference to the main application frame
      * and initializes the user interface components.
@@ -30,12 +37,16 @@ public class GenreYearSelectionScreen extends JPanel {
      * Initializes combo boxes for selecting genre and year, and a submit button with event handling.
      */
     private void initComponents() {
-    	// Use null option to allow intentional non-selection
-        String[] genres = {null, "Progressive Rock", "Hard Bop", "Death Metal", "Hard Rock", "Thrash Metal"};
-        Integer[] years = {null, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999}; // null represents "Please select"
-        
+    	ArrayList<String> genreHelper = data2.get("genre");
+    	
+    	String[] genre = genreHelper.toArray(new String[0]);
+    	
+    	ArrayList<String> yearHelper = data2.get("date");
+    	
+    	String[] years = yearHelper.toArray(new String[0]);
+   
         // Initialize combo boxes with data
-        genreComboBox = new JComboBox<>(genres);
+        genreComboBox = new JComboBox<>(genre);
         yearComboBox = new JComboBox<>(years);
 
         // Setup submit button and attach action listener

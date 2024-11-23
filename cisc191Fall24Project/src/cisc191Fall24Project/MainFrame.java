@@ -67,11 +67,11 @@ public class MainFrame extends JFrame {
      * @param args 
      */
     public static void main(String[] args) {
-//        // Make the frame visible
-//        SwingUtilities.invokeLater(() -> {
-//            new MainFrame().setVisible(true);
-//        });
-//        
+        // Make the frame visible
+        SwingUtilities.invokeLater(() -> {
+            new MainFrame().setVisible(true);
+        });
+        
         System.out.println(IO.readTestResults("top.csv"));
         
     }
