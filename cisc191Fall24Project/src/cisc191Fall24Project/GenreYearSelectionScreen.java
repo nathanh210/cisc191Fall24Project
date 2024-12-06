@@ -37,50 +37,56 @@ public class GenreYearSelectionScreen extends JPanel {
      * Initializes combo boxes for selecting genre and year, and a submit button with event handling.
      */
     private void initComponents() {
-    	ArrayList<String> genreHelper = data2.get("genre");
-    	
-    	String[] genre = genreHelper.toArray(new String[0]);
-    	
-    	ArrayList<String> yearHelper = data2.get("date");
-    	
-    	String[] years = yearHelper.toArray(new String[0]);
-   
-        // Initialize combo boxes with data
+        // Retrieve unique genres from data HashMap and convert to an array
+        ArrayList<String> genreHelper = obj.getUniqueGenres(data2.get("genre"));
+        String[] genre = genreHelper.toArray(new String[0]);
+        
+        // Retrieve unique years from the data HashMap and convert to an array
+        ArrayList<String> yearHelper = obj.getUniqueYears(data2.get(("date")));
+        String[] years = yearHelper.toArray(new String[0]);
+
+        // Initialize and populate the genre selection combo box
         genreComboBox = new JComboBox<>(genre);
+
+        // Initialize and populate the year selection combo box
         yearComboBox = new JComboBox<>(years);
 
-        // Setup submit button and attach action listener
+        // Create the submit button and attach an action listener that triggers submitAction
         submitButton = new JButton("Submit");
         submitButton.addActionListener(this::submitAction);
 
-        // Add components to this panel
+        // Add a label and the genre combo box to the panel for selecting genre
         add(new JLabel("Select Genre:"));
         add(genreComboBox);
+
+        // Add a label and the year combo box to the panel for selecting year
         add(new JLabel("Select Year:"));
         add(yearComboBox);
+
+        // Add the submit button to the panel
         add(submitButton);
     }
 
     /**
-     * The method checks if either selectedGenre or selectedYear is null (i.e., not selected). 
+     * The method checks if either selectedGenre or selectedYear is null (i.e., not selected), and also sends
+     * the selected genre and year to the RankedArtistsScreen constructor.
      * If so, it throws an IllegalArgumentException with a message indicating that both fields are required.
      * A try-catch block captures and handles this exception, displaying an error message in a dialog box to the user.    
      *  * @param e The event object representing the action event.
      */
-    private void submitAction(ActionEvent e) {
+    public void submitAction(ActionEvent e) {
         try {
             String selectedGenre = (String) genreComboBox.getSelectedItem();
-            Integer selectedYear = (Integer) yearComboBox.getSelectedItem();
-            if (selectedGenre == null || selectedYear == null) {
+            String selectedYear = (String) yearComboBox.getSelectedItem();
+            if (selectedGenre == null || selectedYear == null || selectedGenre.equals("Genre") || selectedYear.equals("Year")) {
                 throw new IllegalArgumentException("Both genre and year must be selected.");
-                
             }
-            System.out.println("Genre: " + selectedGenre + ", Year: " + selectedYear);
-            // Proceed to next screen if both selections are valid
-            // mainFrame.showScreen("NextScreenName"); // Uncomment or modify as needed
+
+            // Create and display the RankedArtistsScreen with the selected genre and year
+            new RankedArtistsScreen(selectedGenre, selectedYear);
+
         } catch (IllegalArgumentException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Selection Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
 }
