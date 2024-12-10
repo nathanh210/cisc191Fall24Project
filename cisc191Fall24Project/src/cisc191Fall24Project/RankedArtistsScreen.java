@@ -1,5 +1,6 @@
 package cisc191Fall24Project;
 
+import java.util.ArrayList;
 import java.util.Stack;
 import javax.swing.*;
 import java.awt.*;
@@ -10,18 +11,20 @@ import java.awt.event.ActionEvent;
  * the ranked artists based on the selected genre and year from the GenreYearSelectionScreen.
  */
 public class RankedArtistsScreen extends JFrame {
-    private JTextArea artistArea1;
-    private JTextArea artistArea2;
-    private JTextArea artistArea3;
-    private Stack<String> genreYearStack = new Stack<>();
-    private static GenreYearSelectionScreen obj2 = new GenreYearSelectionScreen(null);
+    private JScrollPane artistArea1;
+    private JScrollPane artistArea2;
+    private JScrollPane artistArea3;
+    private ArrayList<String> artists;
+    private JTextArea artistArea = new JTextArea(5,10);
+//    private Stack<String> genreYearStack = new Stack<>();
+//    private static GenreYearSelectionScreen obj2 = new GenreYearSelectionScreen(null);
 
     /**
      * Constructor for RankedArtistsFrame sets up the frame's properties and initializes its components.
      * @param selectedYear 
      * @param selectedGenre 
      */
-    public RankedArtistsScreen(String selectedGenre, String selectedYear) {
+    public RankedArtistsScreen(ArrayList<String> arrayList) {
         // Set the title of the window
         setTitle("Ranked Artists of Chosen Genre and Year");
         // Set the size of the window
@@ -31,15 +34,18 @@ public class RankedArtistsScreen extends JFrame {
         // Center the window on the screen
         setLocationRelativeTo(null);
         // Initialize the components of the frame
+        System.out.println(arrayList);
+        this.artists = arrayList;
+        System.out.println(artistArea);
         initComponents();
         
         // Push the genre and year onto the stack
-        genreYearStack.push(selectedGenre);
-        genreYearStack.push(selectedYear);
+//        genreYearStack.push(selectedGenre);
+//        genreYearStack.push(selectedYear);
 
         setVisible(true);
         
-        System.out.println(selectedGenre + " " + selectedYear);
+        System.out.println(arrayList);
     }
 
     /**
@@ -51,18 +57,20 @@ public class RankedArtistsScreen extends JFrame {
         panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5)); // Padding around the panel
 
         // Initialize the text areas
-        artistArea1 = new JTextArea(3, 15);
-        artistArea2 = new JTextArea(3, 15);
-        artistArea3 = new JTextArea(3, 15);
+        this.artistArea.setText(this.artists.toString());
+        artistArea1 = new JScrollPane(artistArea);
+        artistArea2 = new JScrollPane(artistArea);
+        artistArea3 = new JScrollPane(artistArea);
+        
         
         
         // Set line wrap and wrap style 
-        artistArea1.setLineWrap(true);
-        artistArea1.setWrapStyleWord(true);
-        artistArea2.setLineWrap(true);
-        artistArea2.setWrapStyleWord(true);
-        artistArea3.setLineWrap(true);
-        artistArea3.setWrapStyleWord(true);
+//        artistArea1.setLineWrap(true);
+//        artistArea1.setWrapStyleWord(true);
+//        artistArea2.setLineWrap(true);
+//        artistArea2.setWrapStyleWord(true);
+//        artistArea3.setLineWrap(true);
+//        artistArea3.setWrapStyleWord(true);
 
         // Add scroll panes to each text area
         panel.add(new JScrollPane(artistArea1));
@@ -86,6 +94,10 @@ public class RankedArtistsScreen extends JFrame {
         SwingUtilities.invokeLater(() -> {
 //            new RankedArtistsScreen(); 
         });
+        
+        
+        // New method to handle aristnames
+        // public static DataType ....
     }
 }
 

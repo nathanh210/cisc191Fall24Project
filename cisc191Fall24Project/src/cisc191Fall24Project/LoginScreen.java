@@ -44,17 +44,20 @@ public class LoginScreen extends JPanel {
         add(submitButton, BorderLayout.SOUTH);
     }
 
+
     /**
-     * Handles the action event when the submit button is clicked. It retrieves the username,
-     * displays it, and transitions to the next screen.
+     * Handles the action event when the submit button is clicked. It checks if the username is empty,
+     * and if not, transitions to the next screen; otherwise, it displays an error message.
      * @param e The event object representing the action event.
      */
     private void submitAction(ActionEvent e) {
-        // Retrieve the text from the username field
-        String username = usernameField.getText();
-        // Output the entered username to the console
-        System.out.println("Username entered: " + username);
-        // Change to the GenreYearSelectionScreen in the main frame
-        mainFrame.showScreen("GenreYearSelectionScreen");
+        String username = usernameField.getText().trim(); // Ensure whitespace is not considered.
+        if (username.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter a username.", "Input Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            System.out.println("Username entered: " + username);
+            mainFrame.showScreen("GenreYearSelectionScreen");
+        }
     }
+    
 }

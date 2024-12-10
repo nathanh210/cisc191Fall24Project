@@ -3,6 +3,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 /**
@@ -67,26 +68,55 @@ public class GenreYearSelectionScreen extends JPanel {
         add(submitButton);
     }
 
+
     /**
-     * The method checks if either selectedGenre or selectedYear is null (i.e., not selected), and also sends
-     * the selected genre and year to the RankedArtistsScreen constructor.
+     * The method checks if either selectedGenre or selectedYear is null (i.e., not selected).
      * If so, it throws an IllegalArgumentException with a message indicating that both fields are required.
-     * A try-catch block captures and handles this exception, displaying an error message in a dialog box to the user.    
-     *  * @param e The event object representing the action event.
+     * A try-catch block captures and handles this exception, displaying an error message in a dialog box to the user.
+     * @param e The event object representing the action event.
      */
     public void submitAction(ActionEvent e) {
-        try {
-            String selectedGenre = (String) genreComboBox.getSelectedItem();
-            String selectedYear = (String) yearComboBox.getSelectedItem();
-            if (selectedGenre == null || selectedYear == null || selectedGenre.equals("Genre") || selectedYear.equals("Year")) {
-                throw new IllegalArgumentException("Both genre and year must be selected.");
+    	 try {
+             String selectedGenre = (String) genreComboBox.getSelectedItem();
+             String selectedYear = (String) yearComboBox.getSelectedItem();
+             if (selectedGenre == null || selectedYear == null || selectedGenre.equals("Genre") || selectedYear.equals("Year")) {
+                 throw new IllegalArgumentException("Both genre and year must be selected.");
+             }
+             ArrayList<String> artists = getArtistsByGenreAndYear(selectedGenre, selectedYear);
+             if (artists.isEmpty()) {
+                 JOptionPane.showMessageDialog(this, "No artists found for the selected genre and year.", "No Matches", JOptionPane.INFORMATION_MESSAGE);
+             } else {
+                 new RankedArtistsScreen(artists); // Assuming RankedArtistsScreen can accept a list of artists.
+             }
+         } catch (IllegalArgumentException ex) {
+             JOptionPane.showMessageDialog(this, ex.getMessage(), "Selection Error", JOptionPane.ERROR_MESSAGE);
+         }
+     }
+
+    /**
+     * Retrieves a list of artists that match the specified genre and year.
+     * @param genre The genre to match.
+     * @param year The year to match.
+     * @return A list of artist names that match the criteria.
+     */
+    private ArrayList<String> getArtistsByGenreAndYear(String genre, String year) {
+        ArrayList<String> artists = new ArrayList<>();
+        ArrayList<String> names = data2.get("name");
+        ArrayList<String> genres = data2.get("genre");
+        ArrayList<String> years = data2.get("date");
+        ArrayList<String> ranks = data2.get("rank");
+        ArrayList<Integer> matchedIndices = new ArrayList<>();
+
+        for (int i = 0; i < genres.size(); i++) {
+            if (genres.get(i).equals(genre) && years.get(i).contains(year)) {
+                matchedIndices.add(i);
             }
-
-            // Create and display the RankedArtistsScreen with the selected genre and year
-            new RankedArtistsScreen(selectedGenre, selectedYear);
-
-        } catch (IllegalArgumentException ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Selection Error", JOptionPane.ERROR_MESSAGE);
         }
+
+        for (int index : matchedIndices) {
+            artists.add(names.get(index));
+        }
+        return artists;
     }
+    
 }

@@ -241,7 +241,7 @@ public class IO {
 		for (int i = 0; i < genre.size(); i++) {
 
 			// If the new array list does not already have the same genre as the old array
-			// list
+			// list, add it to the new ArrayList.
 			// Otherwise, continue
 
 			if ((!uniqueGenre.contains(genre.get(i)))) {
