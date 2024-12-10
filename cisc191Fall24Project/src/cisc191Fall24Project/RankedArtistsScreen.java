@@ -57,20 +57,10 @@ public class RankedArtistsScreen extends JFrame {
         panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5)); // Padding around the panel
 
         // Initialize the text areas
-        this.artistArea.setText(this.artists.toString());
+        this.artistArea.setText(this.artists.toString() + " are the names of the artists associated with your selected genre and year.");
         artistArea1 = new JScrollPane(artistArea);
         artistArea2 = new JScrollPane(artistArea);
         artistArea3 = new JScrollPane(artistArea);
-        
-        
-        
-        // Set line wrap and wrap style 
-//        artistArea1.setLineWrap(true);
-//        artistArea1.setWrapStyleWord(true);
-//        artistArea2.setLineWrap(true);
-//        artistArea2.setWrapStyleWord(true);
-//        artistArea3.setLineWrap(true);
-//        artistArea3.setWrapStyleWord(true);
 
         // Add scroll panes to each text area
         panel.add(new JScrollPane(artistArea1));
