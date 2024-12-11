@@ -2,7 +2,6 @@ package cisc191Fall24Project;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-
 /**
  * The LoginScreen class extends JPanel and provides a user interface
  * for entering a username before proceeding to the next part of the application.
@@ -11,7 +10,6 @@ public class LoginScreen extends JPanel {
     private JTextField usernameField;
     private JButton submitButton;
     private MainFrame mainFrame;
-
     /**
      * Constructor initializes the LoginScreen with a reference to the MainFrame.
      * @param mainFrame The main application window this panel will interact with.
@@ -23,7 +21,6 @@ public class LoginScreen extends JPanel {
         // Initialize user interface components
         initComponents();
     }
-
     /**
      * Initializes the user interface components for username entry.
      */
@@ -36,15 +33,12 @@ public class LoginScreen extends JPanel {
         inputPanel.add(usernameField);
         // Add the input panel to the center of this panel
         add(inputPanel, BorderLayout.CENTER);
-
         // Create the submit button and set up the action listener
         submitButton = new JButton("Submit");
         submitButton.addActionListener(this::submitAction);
         // Add the submit button to the south of this panel
         add(submitButton, BorderLayout.SOUTH);
     }
-
-
     /**
      * Handles the action event when the submit button is clicked. It checks if the username is empty,
      * and if not, transitions to the next screen; otherwise, it displays an error message.

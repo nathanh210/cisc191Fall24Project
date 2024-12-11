@@ -1,8 +1,6 @@
 package cisc191Fall24Project;
-
 import javax.swing.*;
 import java.awt.*;
-
 /**
  * The MainFrame class extends JFrame and serves as the primary window
  * for the Music Finder app. It manages different screens using
@@ -11,7 +9,6 @@ import java.awt.*;
 public class MainFrame extends JFrame {
     private CardLayout cardLayout;  // Layout manager to allow switching between panels
     private JPanel cardPanel;       // Panel that holds different screens
-
     /**
      * Constructor for MainFrame sets up the frame's properties and initializes its components.
      */
@@ -27,7 +24,6 @@ public class MainFrame extends JFrame {
         // Initialize the components and layout of the frame
         initComponents();
     }
-
     /**
      * Initializes the components of the frame, setting up the CardLayout and adding screens.
      */
@@ -40,19 +36,16 @@ public class MainFrame extends JFrame {
         // Create instances of the screens
         LoginScreen loginScreen = new LoginScreen(this);
         GenreYearSelectionScreen genreYearSelectionScreen = new GenreYearSelectionScreen(this);
-
         // Add the screens to the cardPanel with identifiers
         cardPanel.add(loginScreen, "LoginScreen");
         cardPanel.add(genreYearSelectionScreen, "GenreYearSelectionScreen");
-
         // Adding the cardPanel to the frame
         add(cardPanel);
         
-        // Note: Adding loginScreen appears 
+        // loginScreen appears 
         LoginScreen loginScreen1 = new LoginScreen(this);
-        cardPanel.add(loginScreen1, "LoginScreen"); // Potentially problematic
+        cardPanel.add(loginScreen1, "LoginScreen"); 
     }
-
     /**
      * Shows a screen based on the provided name.
      * @param name The name of the screen to be displayed.
@@ -61,7 +54,6 @@ public class MainFrame extends JFrame {
         // Use CardLayout to show the panel associated with 'name'
         cardLayout.show(cardPanel, name);
     }
-
     /**
      * The main method to launch the application.
      * @param args 
