@@ -10,17 +10,33 @@ import java.io.PrintWriter;
 import java.net.URL;
 import java.util.Scanner;
 /**
-* 
- * 
- * 
- */
-/**
- */
-/**
  * Class IO is used for input and output operations, particularly for reading
  * from and processing a CSV file.
  */
 public class IO {
+	
+	// Method to write a string to a file
+    public static void writeToFile(String filename, String content) throws IOException {
+        try (FileWriter writer = new FileWriter(filename, false)) {  // Set to false to overwrite the file each time
+            writer.write(content);
+        }
+    }
+
+    // Method to save results to a file and then open them in Notepad
+    public static void saveResultsAndOpenInNotepad(String filename, ArrayList<String> results) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        for (String result : results) {
+            sb.append(result).append(System.lineSeparator());
+        }
+        writeToFile(filename, sb.toString());
+        openFileInNotepad(filename);
+    }
+
+    // Method to open a file in Notepad
+    private static void openFileInNotepad(String filename) throws IOException {
+        Runtime.getRuntime().exec("notepad.exe " + filename);
+    }
+
 	// Declares a static HashMap to store lists of strings categorized by 'rank',
 	// 'name', 'date', and 'genre'.
 	public static HashMap<String, ArrayList<String>> data = new HashMap<>();

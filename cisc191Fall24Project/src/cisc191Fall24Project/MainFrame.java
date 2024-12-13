@@ -9,6 +9,7 @@ import java.awt.*;
 public class MainFrame extends JFrame {
     private CardLayout cardLayout;  // Layout manager to allow switching between panels
     private JPanel cardPanel;       // Panel that holds different screens
+    
     /**
      * Constructor for MainFrame sets up the frame's properties and initializes its components.
      */

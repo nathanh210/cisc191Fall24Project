@@ -66,11 +66,8 @@ public class RankedArtistsScreen extends JFrame {
      */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-//            new RankedArtistsScreen(); 
         });
         
         
-        // New method to handle aristnames
-        // public static DataType ....
     }
 }
